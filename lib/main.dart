@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -12,14 +13,6 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Flutter Demo',
       theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
       home: new MyHomePage(),
@@ -27,7 +20,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+
+  @override
+  MyHomePageState createState() {
+    return new MyHomePageState();
+  }
+}
+
+class MyHomePageState extends State<MyHomePage> {
+  final DocumentReference documentReference = Firestore.instance.document("badminton/teams");
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = new GoogleSignIn();
@@ -48,6 +50,72 @@ class MyHomePage extends StatelessWidget {
   void _signOut() {
     googleSignIn.signOut();
     print("User Sign Out");
+  }
+
+  void _add(){
+    Map<String, dynamic> data = <String, dynamic>{
+      "Teams": [
+        {
+          "Team Name": "Cocktail",
+          "Players": [
+            {
+              "Name": "Sanket",
+              "Age": "18"
+            },
+            {
+              "Name": "Ronak",
+              "Age": "20"
+            }
+          ]
+        },
+        {
+          "Team Name": "Safarjan",
+          "Players": [
+            {
+              "Name": "Hello",
+              "Age": "21"
+            }
+          ]
+        },
+      ]
+    };
+
+    documentReference.setData(data)
+      .whenComplete((){
+        print("Document Added");
+      })
+      .catchError((e) => print(e));
+  }
+
+  void _delete(){
+    documentReference.delete()
+      .whenComplete((){
+        print("Document Deltede");
+
+      })
+      .catchError((e) => print(e));
+  }
+
+  void _update(){
+    Map<String, String> data = <String, String>{
+      "Name": "Sanket",
+    };
+
+    documentReference.updateData(data)
+      .whenComplete((){
+        print("Document Updated");
+      })
+      .catchError((e) => print(e));
+  }
+
+  void _fetch(){
+    documentReference.get()
+      .then((datasnapshot){
+        if(datasnapshot.exists){
+          print(datasnapshot.data["Name"]);
+        }
+      })
+      .catchError((e) => print(e));
   }
 
   @override
@@ -76,6 +144,38 @@ class MyHomePage extends StatelessWidget {
               onPressed: () => _signOut(),
               child: Text("Sign Out"),
               color: Colors.red
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _add,
+              child: Text("Add"),
+              color: Colors.cyan
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _update,
+              child: Text("Update"),
+              color: Colors.lightBlue
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _delete,
+              child: Text("Delete"),
+              color: Colors.orange
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _fetch,
+              child: Text("Fetch"),
+              color: Colors.lime
             )
           ]
         )
