@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 void main() => runApp(new MyApp());
 
@@ -9,101 +13,173 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: 'Flutter Demo',
       theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      home: new MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  MyHomePageState createState() {
+    return new MyHomePageState();
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class MyHomePageState extends State<MyHomePage> {
+  final DocumentReference documentReference = Firestore.instance.document("badminton/teams");
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = new GoogleSignIn();
+
+  Future<FirebaseUser> _signIn() async {
+    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
+
+    FirebaseUser user = await _auth.signInWithGoogle(
+      idToken: gSA.idToken,
+      accessToken: gSA.accessToken
+    );
+
+    print("User Name: ${user.displayName}");
+    return user;
+  }
+
+  void _signOut() {
+    googleSignIn.signOut();
+    print("User Sign Out");
+  }
+
+  void _add(){
+    Map<String, dynamic> data = <String, dynamic>{
+      "Teams": [
+        {
+          "Team Name": "Cocktail",
+          "Players": [
+            {
+              "Name": "Sanket",
+              "Age": "18"
+            },
+            {
+              "Name": "Ronak",
+              "Age": "20"
+            }
+          ]
+        },
+        {
+          "Team Name": "Safarjan",
+          "Players": [
+            {
+              "Name": "Hello",
+              "Age": "21"
+            }
+          ]
+        },
+      ]
+    };
+
+    documentReference.setData(data)
+      .whenComplete((){
+        print("Document Added");
+      })
+      .catchError((e) => print(e));
+  }
+
+  void _delete(){
+    documentReference.delete()
+      .whenComplete((){
+        print("Document Deltede");
+
+      })
+      .catchError((e) => print(e));
+  }
+
+  void _update(){
+    Map<String, String> data = <String, String>{
+      "Name": "Sanket",
+    };
+
+    documentReference.updateData(data)
+      .whenComplete((){
+        print("Document Updated");
+      })
+      .catchError((e) => print(e));
+  }
+
+  void _fetch(){
+    documentReference.get()
+      .then((datasnapshot){
+        if(datasnapshot.exists){
+          print(datasnapshot.data["Name"]);
+        }
+      })
+      .catchError((e) => print(e));
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return new Scaffold(
-      appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Concours")
       ),
-      body: new Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: new Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug paint" (press "p" in the console where you ran
-          // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-          // window in IntelliJ) to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            new Text(
-              'You have pushed the button this many times:',
+            RaisedButton(
+              onPressed: () => _signIn()
+                .then((FirebaseUser user) => print(user))
+                .catchError((e) => print(e)),
+              child: Text("Sign In"),
+              color: Colors.green
             ),
-            new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            Padding(
+              padding: const EdgeInsets.all(10.0)
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            RaisedButton(
+              onPressed: () => _signOut(),
+              child: Text("Sign Out"),
+              color: Colors.red
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _add,
+              child: Text("Add"),
+              color: Colors.cyan
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _update,
+              child: Text("Update"),
+              color: Colors.lightBlue
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _delete,
+              child: Text("Delete"),
+              color: Colors.orange
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10.0)
+            ),
+            RaisedButton(
+              onPressed: _fetch,
+              child: Text("Fetch"),
+              color: Colors.lime
+            )
+          ]
+        )
+      )
     );
   }
 }
