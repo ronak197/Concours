@@ -14,6 +14,23 @@ class _LoginPageState extends State<LoginPage> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = new GoogleSignIn();
+  bool signedIn = false;
+
+  @override
+  void initState(){
+    super.initState();
+    this._initScreen();
+  }
+
+  Future<bool> _initScreen() async {
+    var _isSignedIn = await googleSignIn.isSignedIn();
+    if(_isSignedIn){
+      setState((){
+        signedIn = true;
+        
+      });
+    }
+  }
 
   Future<FirebaseUser> _signIn() async {
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
@@ -25,6 +42,11 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     print("User Name: ${user.displayName}");
+    bool isSignedIn = await googleSignIn.isSignedIn();
+
+    setState((){
+      signedIn = isSignedIn;
+    });
     return user;
   }
 
