@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:concours/loginPage.dart';
+import 'package:concours/home.dart';
 
 void main() => runApp(new MyApp());
 
@@ -7,11 +7,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Concours',
       theme: new ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.red,
       ),
-      home: new LoginPage(),
+      home: new HomePage(),
     );
   }
 }
