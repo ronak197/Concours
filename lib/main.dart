@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'registration.dart';
+import 'AddPlayers.dart';
+void main() => runApp(new RegistrationPage() );
 
-void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
