@@ -105,11 +105,45 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text(
-                'Sanket Chaudhari',
-                style: TextStyle(
-                  color: Colors.white
-                )
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  userData != null ? Container(
+                    width: 70.0,
+                    height: 70.0,
+                    margin: EdgeInsets.only(
+                      bottom: 15.0
+                    ),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: NetworkImage(
+                          userData["photoUrl"]
+                        )
+                      )
+                    )
+                  ) : CircleAvatar(
+                    child: Icon(Icons.person)
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        userData != null ? userData["displayName"] : "",
+                        style: TextStyle(
+                          color: Colors.white
+                        )
+                      ),
+                      Text(
+                        userData != null ? userData["email"] : "",
+                        style: TextStyle(
+                          color: Colors.white
+                        )
+                      )
+                    ],
+                  )        
+                ]
               ),
               decoration: BoxDecoration(
                 color: Colors.redAccent,

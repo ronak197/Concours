@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:concours/user_config.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -6,6 +7,25 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Map userData;
+
+  @override
+  void initState(){
+    super.initState();
+    this.setup();
+  }
+
+
+  Future<void> setup() async {
+    UserConfig userConfig = new UserConfig();
+
+    Map data = await userConfig.getUser();
+
+    setState((){
+      this.userData = data;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,17 +33,26 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Column(
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          CircleAvatar(
-            backgroundColor: Colors.red.shade100,
-            child: Icon(
-              Icons.person,
-              color: Colors.red.shade300,
-              size: 40.0
+          userData != null ? Container(
+            width: 70.0,
+            height: 70.0,
+            margin: EdgeInsets.only(
+              bottom: 15.0
             ),
-            radius: 40.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(
+                  userData["photoUrl"]
+                )
+              )
+            )
+          ) : CircleAvatar(
+            child: Icon(Icons.person)
           ),
-          Text("Sanket Chaudhari"),
-          Text("chaudharisanket2000@gmail.com")
+          Text(userData != null ? userData["displayName"] : ""),
+          Text(userData != null ? userData["email"] : "")
         ]
       )
     );
