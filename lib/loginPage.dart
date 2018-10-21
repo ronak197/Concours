@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:concours/home.dart';
+import 'package:concours/user_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,48 +12,27 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final DocumentReference documentReference = Firestore.instance.document("badminton/teams");
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = new GoogleSignIn();
-  bool signedIn = false;
+  UserConfig userConfig;
 
-  @override
-  void initState(){
-    super.initState();
-    this._initScreen();
-  }
+  Future<String> _signIn() async {
+    UserConfig userConfig = new UserConfig();
+    await userConfig.signIn();
 
-  Future<bool> _initScreen() async {
-    var _isSignedIn = await googleSignIn.isSignedIn();
+    bool _isSignedIn = await userConfig.isLoggedIn();
+
     if(_isSignedIn){
-      setState((){
-        signedIn = true;
-        
-      });
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage()
+        ),
+        (Route<dynamic> route) => false
+      );
     }
+
+    return "Success";
   }
 
-  Future<FirebaseUser> _signIn() async {
-    GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
-    GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
-
-    FirebaseUser user = await _auth.signInWithGoogle(
-      idToken: gSA.idToken,
-      accessToken: gSA.accessToken
-    );
-
-    print("User Name: ${user.displayName}");
-    bool isSignedIn = await googleSignIn.isSignedIn();
-
-    setState((){
-      signedIn = isSignedIn;
-    });
-    return user;
-  }
-
-  void _signOut() {
-    googleSignIn.signOut();
-    print("User Sign Out");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +45,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             Image.asset("./assets/concours_logo.png"),
             FlatButton(
-              onPressed: () => _signIn()
-                .then((FirebaseUser user) => print(user))
-                .catchError((e) => print(e)),
+              onPressed: () => _signIn(),
               child: Image.asset(
                 "./assets/google_sign_in.png",
                 height: 50.0

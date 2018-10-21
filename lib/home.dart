@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:concours/scoreboard.dart';
+import 'package:concours/profile.dart';
+import 'package:concours/user_config.dart';
+import 'package:concours/loginPage.dart';
 
+@immutable
 class Page extends StatelessWidget {
-  String title;
+  final String title;
 
   Page(this.title);
   @override
@@ -28,13 +32,46 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   TabController tabController;
+  Map userData;
+
+  bool isSignedIn = false;
 
   void initState(){
     super.initState();
+    this.isSignedIn = false;
+    this.setup();
     tabController = new TabController(
       length: 5,
       vsync: this
     );
+  }
+
+  Future<void> setup() async {
+    UserConfig userConfig = new UserConfig();
+    Map data = await userConfig.getUser();
+
+    setState((){
+      this.userData = data;
+    });
+
+    print(this.userData);
+  }
+
+  void _signOut() async {
+    UserConfig userConfig = new UserConfig();
+    await userConfig.signOut();
+
+    if(!userConfig.isSignedIn){
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage()
+        ),
+        (Route<dynamic> route) => false
+      );
+    }
+    
+    print("User Sign Out");
   }
 
   void dispose(){
@@ -48,6 +85,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       appBar: AppBar(
         title: Text(
           "Concours",
+          textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.red
           )
@@ -92,10 +130,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               },
             ),
             ListTile(
-              title: Text('Settings'),
+              title: Text('Log Out'),
               onTap: () {
-                // Update the state of the app
-                // ...
+                _signOut();
               },
             ),
           ],
@@ -106,7 +143,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ScoreBoard(),
           Page("Leaderboard"),
           Page("Upcoming Matches"),
-          Page("@sanket143"),
+          ProfilePage(),
           Page("Information")
         ],
         controller: tabController
