@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+
+// Concours Files
 import 'package:concours/scoreboard.dart';
 import 'package:concours/profile.dart';
 import 'package:concours/user_config.dart';
 import 'package:concours/loginPage.dart';
+import 'package:concours/upcoming_matches.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -191,7 +194,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         children: <Widget>[
           ScoreBoard(),
           Page("Leaderboard"),
-          Page("Upcoming Matches"),
+          UpcomingMatchesPage(),
           ProfilePage(),
           Page("Information")
         ],
