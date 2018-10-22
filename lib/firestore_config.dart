@@ -6,16 +6,12 @@ class FirestoreConfig {
   CollectionReference collectionReference;
   DocumentReference userReference;
 
-  FirestoreConfig(){
-    collectionReference = Firestore.instance.collection("users");
+  FirestoreConfig(String collectionName){
+    collectionReference = Firestore.instance.collection(collectionName);
   }
 
-  DocumentReference getDocument(String documentName){
-    return collectionReference.document(documentName);
-  }
-
-  Future<void> addData(String uid, Map data) async {
-    userReference = collectionReference.document(uid);
+  Future<void> addData(String documentName, Map data) async {
+    userReference = collectionReference.document(documentName);
 
     userReference.setData(data)
       .whenComplete((){

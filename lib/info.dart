@@ -13,7 +13,7 @@ class _InfoPageState extends State<InfoPage> {
   @override
   initState(){
     super.initState();
-    firestoreConfig = new FirestoreConfig();
+    firestoreConfig = new FirestoreConfig("users");
   }
 
   @override

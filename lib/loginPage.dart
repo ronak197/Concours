@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<String> _signIn() async {
     UserConfig userConfig = new UserConfig();
-    firestoreConfig = new FirestoreConfig();
+    firestoreConfig = new FirestoreConfig("users");
 
     await userConfig.signIn();
 
