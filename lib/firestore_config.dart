@@ -10,6 +10,10 @@ class FirestoreConfig {
     collectionReference = Firestore.instance.collection(collectionName);
   }
 
+  Stream<QuerySnapshot> getSnapshot(){
+    return collectionReference.snapshots();
+  }
+
   Future<void> addData(String documentName, Map data) async {
     userReference = collectionReference.document(documentName);
 
