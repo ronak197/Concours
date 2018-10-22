@@ -29,6 +29,7 @@ class UserConfig {
       "displayName": this.user.displayName,
       "email": this.user.email,
       "photoUrl": this.user.photoUrl,
+      "uid": this.user.uid,
       "phoneNumber": this.user.phoneNumber
     };
 
