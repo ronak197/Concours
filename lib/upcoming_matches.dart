@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import 'package:concours/firestore_config.dart';
 
 class UpcomingMatchesPage extends StatefulWidget {
@@ -26,7 +26,11 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
     querySnapshot.listen((snapshot){
       snapshot.documents.forEach((doc){
         print(doc.data);
-        this.data.add(doc.data);
+        setState((){
+          this.data.add(doc.data);
+        });
+
+        
       });
     });
 
@@ -36,7 +40,44 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text("Upcoming Matches")
+      child: ListView.builder(
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index){
+          var formatter = new DateFormat('H:m d MMM yy');
+
+          this.data.forEach((data){
+            String formatted = formatter.format(data["timestamp"]);
+
+            print(formatted);
+          });
+
+          return Card(
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    formatter.format(this.data[index]["timestamp"])
+                  ),
+                  Text(
+                    this.data[index]["sport"],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        this.data[index]["players"][0]["name"]
+                      ),
+                      Text(
+                        this.data[index]["players"][1]["name"]
+                      )
+                    ],
+                  )
+                ]
+              )
+            ) 
+          );
+        },
+      )
     );
   }
 }

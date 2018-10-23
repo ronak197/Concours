@@ -25,14 +25,16 @@ class UserConfig {
 
   Future<Map> getUser() async {
     this.user = await _auth.currentUser();
-    var data = {
-      "displayName": this.user.displayName,
-      "email": this.user.email,
-      "photoUrl": this.user.photoUrl,
-      "uid": this.user.uid,
-      "phoneNumber": this.user.phoneNumber
-    };
-
+    Map data;
+    if(this.user != null){
+      data = {
+        "displayName": this.user.displayName,
+        "email": this.user.email,
+        "photoUrl": this.user.photoUrl,
+        "uid": this.user.uid,
+        "phoneNumber": this.user.phoneNumber
+      };
+    }
     return data;
   }
 
