@@ -29,12 +29,9 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
         setState((){
           this.data.add(doc.data);
         });
-
-        
       });
     });
 
-    print("DATA: ${data.toString()}");
   }
 
   @override
