@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:concours/scoreboard.dart';
 import 'package:concours/profile.dart';
 import 'package:concours/user_config.dart';
 import 'package:concours/loginPage.dart';
-import 'registration.dart';
+import 'package:concours/registration.dart';
 
 @immutable
 class Page extends StatelessWidget {

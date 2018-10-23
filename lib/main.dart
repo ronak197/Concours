@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:concours/home.dart';
 import 'package:concours/loginPage.dart';
 import 'package:concours/user_config.dart';
-import 'package:concours/firestore_config.dart';
 
 
 void main() => runApp(new MyApp());
@@ -14,7 +13,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   UserConfig userConfig;
-  FirestoreConfig firestoreConfig;
 
   bool isSignedIn = false;
 
@@ -22,7 +20,6 @@ class _MyAppState extends State<MyApp> {
   void initState(){
     super.initState();
     this.userConfig = new UserConfig();
-    this.firestoreConfig = new FirestoreConfig();
     this.setup();
     this.isSignedIn = false;
   }
@@ -48,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       theme: new ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }
