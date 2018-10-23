@@ -11,7 +11,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
   FirestoreConfig firestoreConfig;
   List data = [];
   
-  /// Initializes scheduls collection
+  /// Initializes schedule collection
   @override
   initState(){
     super.initState();
@@ -42,16 +42,34 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
         itemBuilder: (BuildContext context, int index){
           var formatter = new DateFormat('H:m d MMM yy');
 
-          this.data.forEach((data){
-            String formatted = formatter.format(data["timestamp"]);
-
-            print(formatted);
-          });
-
           return Card(
             child: Container(
               child: Column(
                 children: <Widget>[
+                  CardHeader(
+                    heading: this.data[index]["sport"],
+                    subHeading: this.data[index]["sub"],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: PlayerLabel(
+                          this.data[index]["players"][0]["name"]
+                        )
+                      ),
+                      Expanded(
+                        child: Text(
+                          "VS",
+                          textAlign: TextAlign.center,
+                        )
+                      ),
+                      Expanded(
+                        child: PlayerLabel(
+                          this.data[index]["players"][1]["name"]
+                        ),
+                      )
+                    ]
+                  ),
                   Text(
                     formatter.format(this.data[index]["timestamp"])
                   ),
@@ -61,12 +79,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        this.data[index]["players"][0]["name"]
-                      ),
-                      Text(
-                        this.data[index]["players"][1]["name"]
-                      )
+                      
                     ],
                   )
                 ]
@@ -75,6 +88,53 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
           );
         },
       )
+    );
+  }
+}
+
+class CardHeader extends StatelessWidget {
+  final String heading;
+  final String subHeading;
+  CardHeader({this.heading, this.subHeading});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.maxFinite,
+      color: Colors.redAccent,
+      padding: EdgeInsets.all(10.0),
+      margin: EdgeInsets.only(bottom: 10.0),
+      child: this.subHeading != null ? 
+        Text(
+          "${this.heading} ( ${this.subHeading})",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0
+          )
+        ) :
+        Text(
+          "${this.heading}",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0
+          )
+        )
+    );
+  }
+}
+
+class PlayerLabel extends StatelessWidget {
+  final String playerName;
+
+  PlayerLabel(this.playerName);
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      this.playerName,
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 20.0,
+        fontWeight: FontWeight.bold
+      ),
     );
   }
 }

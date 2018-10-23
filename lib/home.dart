@@ -177,8 +177,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 ]
               ),
               onTap: () {
-                // Update the state of the app
-                // ...
+                
               },
             ),
             ListTile(
