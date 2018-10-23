@@ -47,6 +47,8 @@ flutter:
     - assets/registrationPageAssets/register_logo.png
     - assets/registrationPageAssets/team_icon.png
     - assets/registrationPageAssets/teamName_icon.png
+    - assets/concours_logo.png
+    - assets/google_sign_in.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

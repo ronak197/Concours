@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'AddPlayers.dart';
+import 'home.dart';
 
 class RegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
       theme: new ThemeData(
-          primaryColor: Colors.red,
+          primaryColor: Color(0xffdc143c),
           buttonColor: Colors.red
       ),
       home: new FormPage(),
@@ -26,8 +27,8 @@ class _FormPageState extends State<FormPage> {
   String _teamName;
   String _collegeName;
   String _contactNo;
-  String selectedSport = 'Select a Sport';
-  String category;
+  String _selectedSport = 'Select a Sport';
+  String _category;
 
   @override
   void initState() {
@@ -46,7 +47,13 @@ class _FormPageState extends State<FormPage> {
 
     if (form.validate()) {
       form.save();
-      Navigator.push(context, MaterialPageRoute(builder: (context) => AddPlayers(registrationFormKey: formKey,)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => AddPlayersPage(
+        _teamName,
+        _collegeName,
+        _contactNo,
+        _selectedSport,
+        _category,
+      )));
     }
   }
 
@@ -67,9 +74,9 @@ class _FormPageState extends State<FormPage> {
     setState(() {
       _radioValue = value;
       switch(_radioValue){
-        case 0: category = "Men";
+        case 0: _category = "Men";
         break;
-        case 1: category = "Women";
+        case 1: _category = "Women";
       }
     });
   }
@@ -88,7 +95,7 @@ class _FormPageState extends State<FormPage> {
               Icons.arrow_back,
               color: Color(0xffdc143c),
             ),
-            onPressed: null,
+            onPressed:() => Navigator.pop(context,HomePage),
           ),
           title: new Container(
             child: Image.asset(
@@ -187,13 +194,13 @@ class _FormPageState extends State<FormPage> {
                               );
                             }).toList(),
                             hint: Text(
-                              selectedSport,
+                              _selectedSport,
                               style: new TextStyle(
                                 color: Color(0xffdc143c),
                               ),
                             ),
                             onChanged: (newVal) {
-                              selectedSport = newVal;
+                              _selectedSport = newVal;
                               this.setState(() {});
                             }),
                       ),

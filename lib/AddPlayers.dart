@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'registration.dart';
 
-class AddPlayers extends StatelessWidget {
-
-  final registrationFormKey;
-  AddPlayers({this.registrationFormKey});
-
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      home: new AddPlayersPage(),
-      theme: new ThemeData(
-        primaryColor: Color(0xffdc143c)
-      ),
-    );
-  }
+class TeamInfo{
+  String teamName="";
+  String collegeName="";
+  String contactNo="";
+  String selectedSport = 'Select a Sport';
+  String category="";
 }
 
+final TeamInfo teamInfo = new TeamInfo();
+
 class AddPlayersPage extends StatefulWidget {
+
+  AddPlayersPage(String teamName, String collegeName,String contactNo, String selectedSport, String category){
+    teamInfo.teamName=teamName;
+    teamInfo.collegeName=collegeName;
+    teamInfo.contactNo=contactNo;
+    teamInfo.selectedSport=selectedSport;
+    teamInfo.category=category;
+  }
+
   @override
   _AddPlayersPageState createState() => _AddPlayersPageState();
 }
@@ -26,38 +32,25 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
   int currentStep = 0;
 
   List<Step> mySteps = [];
-  void getListOfSteps(){
 
-
-    setState(() {
+  List<Step> getListOfSteps(){
+    mySteps = [];
       for(int i = 0; i < playerInfoSteps.length; i+=1){
-        PlayerInfo playerInfo = new PlayerInfo();
-        mySteps.add(playerInfo.playerStep(i+1));
+        mySteps.add(playerInfoSteps[i].playerStep(i+1));
       }
-    });
-  }
-
-  @override
-  void initState(){
-    super.initState();
-    this.mySteps = [];
-    this.getListOfSteps();
+      return mySteps;
   }
 
   static List<PlayerInfo> playerInfoSteps = [
     new PlayerInfo(),
-    new PlayerInfo(),
-    new PlayerInfo()
   ];
 
   void changeCurrentStepContinue(){
-    var _currentStep = currentStep;
-
-
-    print("$_currentStep ${mySteps.length}");
     setState(() {
-      PlayerInfo playerInfo = new PlayerInfo();
-      // mySteps.add(playerInfo.playerStep(_currentStep));
+      if(currentStep == playerInfoSteps.length-1){
+        playerInfoSteps.add(new PlayerInfo());
+        mySteps.add(playerInfoSteps[currentStep+1].playerStep(currentStep+1));
+      }
       ++currentStep;
     });
   }
@@ -86,8 +79,34 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
       }
     }
     if(count==playerInfoSteps.length){
-        print("READY TO PASS INTO FIREBASE");
+
+      Map<String,dynamic> data = new Map();
+
+      data.putIfAbsent("TeamName", () => "${teamInfo.teamName}");
+      data.putIfAbsent("CollegeName", () => "${teamInfo.collegeName}");
+
+      Map<String,dynamic> data1 = new Map();
+
+      for(int i=0; i<playerInfoSteps.length; i+=1) {
+        Map<String,String> tempData=new Map();
+        print("Name: ${playerInfoSteps[i].name}, Age: ${playerInfoSteps[i].age}, Email Id: ${playerInfoSteps[i].email}");
+        tempData.putIfAbsent("playerName", () => "${playerInfoSteps[i].name}");
+        tempData.putIfAbsent("playerAge", () => "${playerInfoSteps[i].age}");
+        tempData.putIfAbsent("playerEmail", () => "${playerInfoSteps[i].email}");
+        data1.putIfAbsent("Player_$i",()=>tempData);
+      }
+
+      data.putIfAbsent("Players", ()=>data1);
+      sendToFireStore(data);
     }
+  }
+
+  void sendToFireStore(var data){
+    DocumentReference documentReference = Firestore.instance.document("${teamInfo.selectedSport}/${teamInfo.category}/");
+    documentReference.setData(data)
+        .whenComplete((){
+      print("Document Added");
+    }).catchError((e) => print(e));
   }
 
   @override
@@ -98,11 +117,11 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
         elevation: 0.0,
         backgroundColor: Colors.white,
         leading: new IconButton(
+          onPressed: () => Navigator.pop(context,RegistrationPage),
           icon: Icon(
             Icons.arrow_back,
             color: Color(0xffdc143c),
           ),
-          onPressed: null,
         ),
         title: new Container(
           child: Image.asset(
@@ -131,8 +150,8 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
                    Container(
                      constraints: BoxConstraints.loose(new Size(double.maxFinite,450.0)),
                      child: new Stepper(
-                       steps: this.mySteps,
-                       currentStep: this.currentStep,
+                       steps: getListOfSteps(),
+                       currentStep: currentStep,
                        onStepContinue: changeCurrentStepContinue,
                        onStepCancel: changeCurrentStepCancel,
                        onStepTapped: changeCurrentStepTapped,
