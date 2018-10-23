@@ -25,10 +25,15 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
 
     querySnapshot.listen((snapshot){
       snapshot.documents.forEach((doc){
-        print(doc.data);
-        setState((){
-          this.data.add(doc.data);
-        });
+        print('${doc.data["timestamp"]} ${DateTime.now()}');
+
+        var matchTime = DateTime.parse(doc.data["timestamp"].toString());
+
+        if(matchTime.isAfter(DateTime.now())){
+          setState((){
+            this.data.add(doc.data);
+          });
+        }
       });
     });
 
@@ -48,7 +53,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                 children: <Widget>[
                   CardHeader(
                     heading: this.data[index]["sport"],
-                    subHeading: this.data[index]["sub"],
+                    subHeading: this.data[index]["subfield_value"],
                   ),
                   Row(
                     children: <Widget>[
