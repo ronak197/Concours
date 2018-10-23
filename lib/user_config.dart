@@ -29,6 +29,7 @@ class UserConfig {
       "displayName": this.user.displayName,
       "email": this.user.email,
       "photoUrl": this.user.photoUrl,
+      "uid": this.user.uid,
       "phoneNumber": this.user.phoneNumber
     };
 
@@ -41,6 +42,7 @@ class UserConfig {
   }
 
   Future<void> signIn() async {
+    
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
 

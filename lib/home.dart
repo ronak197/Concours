@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:concours/scoreboard.dart';
 import 'package:concours/profile.dart';
 import 'package:concours/user_config.dart';
 import 'package:concours/loginPage.dart';
+import 'package:concours/registration.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -150,21 +152,35 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               ),
             ),
             ListTile(
-              title: Text('Add Team'),
+              title: Row(
+                children: <Widget> [
+                  Icon(Icons.group_add),
+                  Text(' Add Team'),
+                ]
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+              },
+            ),
+            ListTile(
+              title: Row(
+                children: <Widget> [
+                  Icon(Icons.info),
+                  Text(' About'),
+                ]
+              ),
               onTap: () {
                 // Update the state of the app
                 // ...
               },
             ),
             ListTile(
-              title: Text('About'),
-              onTap: () {
-                // Update the state of the app
-                // ...
-              },
-            ),
-            ListTile(
-              title: Text('Log Out'),
+              title: Row(
+                children: <Widget> [
+                  Icon(Icons.power_settings_new),
+                  Text(' Log Out')
+                ]
+              ),
               onTap: () {
                 _signOut();
               },
