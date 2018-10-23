@@ -6,6 +6,7 @@ import 'package:concours/profile.dart';
 import 'package:concours/user_config.dart';
 import 'package:concours/loginPage.dart';
 import 'package:concours/upcoming_matches.dart';
+import 'package:concours/registration.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -145,7 +146,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         )
                       )
                     ],
-                  )        
+                  )
                 ]
               ),
               decoration: BoxDecoration(
@@ -160,8 +161,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 ]
               ),
               onTap: () {
-                // Update the state of the app
-                // ...
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegistrationPage()
+                  )
+                );
               },
             ),
             ListTile(
