@@ -7,6 +7,7 @@ import 'package:concours/user_config.dart';
 import 'package:concours/loginPage.dart';
 import 'package:concours/upcoming_matches.dart';
 import 'package:concours/registration.dart';
+import 'package:concours/leaderboard.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -197,7 +198,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       body: TabBarView(
         children: <Widget>[
           ScoreBoard(),
-          Page("Leaderboard"),
+          LeaderboardPage(),
           UpcomingMatchesPage(),
           ProfilePage(),
           Page("Information")
