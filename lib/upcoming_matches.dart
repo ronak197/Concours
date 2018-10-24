@@ -46,7 +46,6 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
         }
       });
     });
-
   }
 
   @override
