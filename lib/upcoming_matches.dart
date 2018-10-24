@@ -58,21 +58,20 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
       child: ListView.builder(
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index){
-          var formatter = new DateFormat('H:m d MMM yy');
+          var formatter = new DateFormat('HH:mm, d MMM');
 
           return Card(
             child: Container(
               child: Column(
                 children: <Widget>[
                   CardHeader(
-                    heading: this.data[index]["sport"],
-                    subHeading: this.data[index]["subfield_value"],
+                    "${this.data[index]["sport"]} (${this.data[index]["label"]})"
                   ),
                   Row(
                     children: <Widget>[
                       Expanded(
                         child: PlayerLabel(
-                          this.data[index]["players"][0]["name"]
+                          this.data[index]["participants"][0]["team"]
                         )
                       ),
                       Expanded(
@@ -83,23 +82,49 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                       ),
                       Expanded(
                         child: PlayerLabel(
-                          this.data[index]["players"][1]["name"]
+                          this.data[index]["participants"][1]["team"]
                         ),
                       )
                     ]
                   ),
-                  Text(
-                    formatter.format(this.data[index]["timestamp"])
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 10.0,
+                      left: 10.0,
+                      right: 10.0
+                    ),
+                    child:Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Start Time: ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          )
+                        ),
+                        Text(
+                          formatter.format(this.data[index]["timestamp"])
+                        ),
+                      ]
+                    ),
                   ),
-                  Text(
-                    this.data[index]["sport"],
+                  Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child:Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Ground: ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold
+                          )
+                        ),
+                        Text(
+                          this.data[index]["venue"],
+                        ),
+                      ]
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      
-                    ],
-                  )
                 ]
               )
             ) 
@@ -112,9 +137,8 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
 
 class CardHeader extends StatelessWidget {
   final String heading;
-  final String subHeading;
 
-  CardHeader({this.heading, this.subHeading});
+  CardHeader(this.heading);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -122,21 +146,13 @@ class CardHeader extends StatelessWidget {
       color: Colors.redAccent,
       padding: EdgeInsets.all(10.0),
       margin: EdgeInsets.only(bottom: 10.0),
-      child: this.subHeading != null ? 
-        Text(
-          "${this.heading} ( ${this.subHeading})",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0
-          )
-        ) :
-        Text(
-          "${this.heading}",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0
-          )
+      child: Text(
+        "${this.heading}",
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 20.0
         )
+      )
     );
   }
 }
