@@ -132,7 +132,7 @@ class Info extends StatelessWidget {
 }
 
 class Score extends StatelessWidget {
-  int one, two;
+  final int one, two;
   
   Score(this.one, this.two);
 
@@ -173,7 +173,7 @@ class Score extends StatelessWidget {
 }
 
 class ScoreText extends StatelessWidget {
-  String text;
+  final String text;
 
   ScoreText(this.text);
   @override
@@ -190,8 +190,8 @@ class ScoreText extends StatelessWidget {
 }
 
 class TextLabel extends StatelessWidget {
-  String text;
-  bool bold;
+  final String text;
+  final bool bold;
   TextLabel(this.text, this.bold);
 
   @override

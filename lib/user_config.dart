@@ -25,13 +25,16 @@ class UserConfig {
 
   Future<Map> getUser() async {
     this.user = await _auth.currentUser();
-    var data = {
-      "displayName": this.user.displayName,
-      "email": this.user.email,
-      "photoUrl": this.user.photoUrl,
-      "phoneNumber": this.user.phoneNumber
-    };
-
+    Map data;
+    if(this.user != null){
+      data = {
+        "displayName": this.user.displayName,
+        "email": this.user.email,
+        "photoUrl": this.user.photoUrl,
+        "uid": this.user.uid,
+        "phoneNumber": this.user.phoneNumber
+      };
+    }
     return data;
   }
 
@@ -41,6 +44,7 @@ class UserConfig {
   }
 
   Future<void> signIn() async {
+    
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
     GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
 

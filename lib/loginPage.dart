@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:concours/home.dart';
 import 'package:concours/user_config.dart';
+import 'package:concours/firestore_config.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,14 +12,27 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final DocumentReference documentReference = Firestore.instance.document("badminton/teams");
+  FirestoreConfig firestoreConfig;
 
   UserConfig userConfig;
 
+
+
   Future<String> _signIn() async {
     UserConfig userConfig = new UserConfig();
+    firestoreConfig = new FirestoreConfig("users");
+
     await userConfig.signIn();
 
     bool _isSignedIn = await userConfig.isLoggedIn();
+    Map userData = await userConfig.getUser();
+
+    Map<String, dynamic> data = {
+      "name": userData['displayName'],
+      "email": userData['email'],
+    };
+
+    firestoreConfig.addData(userData["uid"], data);
 
     if(_isSignedIn){
       Navigator.pushAndRemoveUntil(
