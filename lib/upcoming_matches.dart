@@ -25,6 +25,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
     
     querySnapshot.listen((snapshot){
       List docs = snapshot.documents;
+      var dateFormatter = new DateFormat('dd MMM');
 
       docs.sort((match1, match2){
         var r = match1.data["timestamp"].compareTo(match2.data["timestamp"]);
@@ -36,8 +37,22 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
       });
 
       docs.forEach((doc){
-
+        var today = DateTime.now().day;
         var matchTime = DateTime.parse(doc.data["timestamp"].toString());
+        var matchday = matchTime.day;
+
+        if(today == matchday){
+          doc.data["timesince"] = "Today";
+        }
+        else if(today == matchday - 1){
+          doc.data["timesince"] = "Tomorrow";
+        }
+        else {
+          doc.data["timesince"] = dateFormatter.format(doc.data["timestamp"]);
+        }
+
+
+
 
         if(matchTime.isAfter(DateTime.now())){
           setState((){
@@ -54,9 +69,10 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
       child: ListView.builder(
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index){
-          var formatter = new DateFormat('HH:mm, d MMM');
+          var formatter = new DateFormat('HH:mm');
 
           return Card(
+            margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 5.0,top: 5.0),
             child: Container(
               child: Column(
                 children: <Widget>[
@@ -74,16 +90,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                             PlayerLabel(
                               this.data[index]["participants"][0]["team"]
                             ),
-                            Text(
-                              this.data[index]["participants"][0]["college"]
-                            )
                           ]
-                        )
-                      ),
-                      Expanded(
-                        child: Text(
-                          "VS",
-                          textAlign: TextAlign.center,
                         )
                       ),
                       Expanded(
@@ -94,9 +101,6 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                             PlayerLabel(
                               this.data[index]["participants"][1]["team"]
                             ),
-                            Text(
-                              this.data[index]["participants"][1]["college"]
-                            )
                           ]
                         )
                       )
@@ -109,16 +113,12 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                       right: 10.0
                     ),
                     child:Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Start Time: ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold
-                          )
-                        ),
-                        Text(
-                          formatter.format(this.data[index]["timestamp"])
+                          this.data[index]["timesince"] + ", " +
+                          formatter.format(this.data[index]["timestamp"]),
+                          style: TextStyle(color: Colors.black54),
                         ),
                       ]
                     ),
@@ -126,16 +126,13 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                   Padding(
                     padding: EdgeInsets.all(10.0),
                     child:Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "Ground: ",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold
-                          )
-                        ),
-                        Text(
                           this.data[index]["venue"],
+                          style: TextStyle(
+                            color: Colors.black54,
+                          ),
                         ),
                       ]
                     ),
@@ -172,7 +169,7 @@ class CardHeader extends StatelessWidget {
             this.heading,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20.0
+              fontSize: 15.0
             )
           ),
           Text(
@@ -200,7 +197,7 @@ class PlayerLabel extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: 20.0,
-        fontWeight: FontWeight.bold
+        color: Colors.black,
       ),
     );
   }

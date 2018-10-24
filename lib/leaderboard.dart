@@ -7,6 +7,7 @@ class LeaderboardPage extends StatefulWidget {
 }
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
+
   FirestoreConfig firestoreConfig;
   List data;
 
@@ -23,15 +24,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ListView.builder(
-        itemCount: this.data.length,
-        itemBuilder: (BuildContext context, int index) => ListTile(
-          title: Text(
-            "#${this.data[index]["rank"]} ${this.data[index]["college_name"]}"
-          ),
-        ),
-      )
-    );
+    return Container();
   }
 }
