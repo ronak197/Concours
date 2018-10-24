@@ -23,7 +23,6 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
   Future<void> setup() async {
     var querySnapshot = firestoreConfig.getSnapshot();
     
-    
     querySnapshot.listen((snapshot){
       List docs = snapshot.documents;
 
@@ -36,9 +35,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
         this.data = [];
       });
 
-      print(docs);
-      snapshot.documents.forEach((doc){
-        print('${doc.data["timestamp"]} ${DateTime.now()}');
+      docs.forEach((doc){
 
         var matchTime = DateTime.parse(doc.data["timestamp"].toString());
 
@@ -65,13 +62,23 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
               child: Column(
                 children: <Widget>[
                   CardHeader(
-                    "${this.data[index]["sport"]} (${this.data[index]["label"]})"
+                    "${this.data[index]["sport"]} (${this.data[index]["label"]})",
+                    this.data[index]["category"]
                   ),
                   Row(
                     children: <Widget>[
                       Expanded(
-                        child: PlayerLabel(
-                          this.data[index]["participants"][0]["team"]
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            PlayerLabel(
+                              this.data[index]["participants"][0]["team"]
+                            ),
+                            Text(
+                              this.data[index]["participants"][0]["college"]
+                            )
+                          ]
                         )
                       ),
                       Expanded(
@@ -81,9 +88,18 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                         )
                       ),
                       Expanded(
-                        child: PlayerLabel(
-                          this.data[index]["participants"][1]["team"]
-                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            PlayerLabel(
+                              this.data[index]["participants"][1]["team"]
+                            ),
+                            Text(
+                              this.data[index]["participants"][1]["college"]
+                            )
+                          ]
+                        )
                       )
                     ]
                   ),
@@ -137,8 +153,12 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
 
 class CardHeader extends StatelessWidget {
   final String heading;
+  final String category;
 
-  CardHeader(this.heading);
+  CardHeader(
+    this.heading,
+    this.category
+  );
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -146,12 +166,25 @@ class CardHeader extends StatelessWidget {
       color: Colors.redAccent,
       padding: EdgeInsets.all(10.0),
       margin: EdgeInsets.only(bottom: 10.0),
-      child: Text(
-        "${this.heading}",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20.0
-        )
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            this.heading,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0
+            )
+          ),
+          Text(
+            this.category,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 15.0
+            )
+          )
+        ]
       )
     );
   }
