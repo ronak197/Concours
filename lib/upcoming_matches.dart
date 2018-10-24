@@ -114,7 +114,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Ground: ",
+                          "Venue: ",
                           style: TextStyle(
                             fontWeight: FontWeight.bold
                           )

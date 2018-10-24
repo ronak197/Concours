@@ -7,78 +7,91 @@ class ScoreBoard extends StatefulWidget {
 }
 
 class _ScoreBoardState extends State<ScoreBoard> {
+
+  String teamName1 = "TeamName1";
+  String teamName2 = "TeamName2";
+  String playersTeam1 = "PlayersTeam1";
+  String playersTeam2 = "PlayersTeam2";
+  String sportName = "SportName";
+  String matchType = "MatchType";
+  int scoreTeam1 = 10;
+  int scoreTeam2 = 8;
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          Container(
-            alignment: Alignment.topLeft,
-            padding: EdgeInsets.all(15.0),
-            color: Color(0xFFFEECEC),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "Badminton",
-                  style: TextStyle(
-                    color: Color(0xFFDC143C),
-                    fontSize: 17.0,
-                    fontWeight: FontWeight.bold
-                  )
-                ),
-                Text(
-                  "1st Singles",
-                  style: TextStyle(
-                    color: Color(0xFFDC143C),
-                    fontSize: 15.0
-                  )
-                )
-              ]
-            )
-          ),
-          Container(
-            color: Color(0xFFDC143C),
-            padding: EdgeInsets.all(15.0),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(
-                    bottom: 15.0
+    return Card(
+      margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 10.0),
+      child: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Container(
+              alignment: Alignment.topLeft,
+              padding: EdgeInsets.all(15.0),
+              color: Color(0xFFFEECEC),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    sportName,
+                    style: TextStyle(
+                      color: Color(0xFFff5252),
+                      fontSize: 17.0,
+                      fontWeight: FontWeight.bold
+                    )
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            TextLabel("Sanket Chaudhari", true),
-                            TextLabel("Cocktail", false)
-                          ]
+                  Text(
+                    matchType,
+                    style: TextStyle(
+                      color: Color(0xffff5252),
+                      fontSize: 15.0
+                    )
+                  )
+                ]
+              )
+            ),
+            Container(
+              color: Color(0xffff5252),
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      bottom: 15.0
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              TextLabel(teamName1, true),
+                              TextLabel(playersTeam1, false)
+                            ]
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            TextLabel("Sumeet Varma", true),
-                            TextLabel("FruitSalad", false)
-                          ]
-                        ),
-                      )
-                    ]
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              TextLabel(teamName2, true),
+                              TextLabel(playersTeam2, false)
+                            ]
+                          ),
+                        )
+                      ]
+                    ),
                   ),
-                ),
-                Score(10, 8),
-              ]
-            )
-          ),
-          Info()
-        ]
-      )
+                  Score(scoreTeam1,scoreTeam2),
+                ]
+              )
+            ),
+            Info()
+          ]
+        )
+      ),
     );
   }
 }

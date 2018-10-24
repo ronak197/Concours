@@ -46,6 +46,7 @@ class UserConfig {
   Future<void> signIn() async {
     
     GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+    print(googleSignInAccount);
     GoogleSignInAuthentication gSA = await googleSignInAccount.authentication;
 
     this.user = await _auth.signInWithGoogle(

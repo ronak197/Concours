@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
       theme: new ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: LoginPage(),
+      home: HomePage(),
     );
   }
 }

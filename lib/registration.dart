@@ -6,8 +6,8 @@ class RegistrationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       theme: new ThemeData(
-          primaryColor: Color(0xffdc143c),
-          buttonColor: Colors.red
+          primaryColor: Colors.red,
+          buttonColor: Colors.redAccent,
       ),
       home: new FormPage(),
     );
@@ -80,7 +80,7 @@ class _FormPageState extends State<FormPage> {
         leading: new IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Color(0xffdc143c),
+            color: Color(0xFFF44336),
           ),
           onPressed:(){
             Navigator.pop(context);
@@ -115,7 +115,7 @@ class _FormPageState extends State<FormPage> {
                       decoration: new InputDecoration(
                         labelText: "Team Name",
                         labelStyle: TextStyle(
-                            color: Color(0xffdc143c)
+                            color: Color(0xFFF44336)
                         ),
                         prefixIcon: Padding(
                           padding: EdgeInsets.all(0.0),
@@ -132,7 +132,7 @@ class _FormPageState extends State<FormPage> {
                       decoration: new InputDecoration(
                         labelText: "College Name",
                         labelStyle: TextStyle(
-                          color: Color(0xffdc143c),
+                          color: Color(0xFFF44336),
                         ),
                         prefixIcon: Padding(
                           padding: EdgeInsets.all(0.0),
@@ -151,7 +151,7 @@ class _FormPageState extends State<FormPage> {
                       decoration: new InputDecoration(
                         labelText: "Contact No.",
                         labelStyle: TextStyle(
-                          color: Color(0xffdc143c),
+                          color: Color(0xFFF44336),
                         ),
                         prefixIcon: Padding(
                           padding: EdgeInsets.all(0.0),
@@ -168,7 +168,7 @@ class _FormPageState extends State<FormPage> {
                     new Container(
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Color(0xffdc143c),
+                          color: Color(0xFFF44336),
                           width: 1.0)
                       ),
                       padding: EdgeInsets.all(5.00),
@@ -184,7 +184,7 @@ class _FormPageState extends State<FormPage> {
                         hint: Text(
                           _selectedSport,
                           style: new TextStyle(
-                            color: Color(0xffdc143c),
+                            color: Color(0xFFF44336),
                           ),
                         ),
                         onChanged: (newVal) {
@@ -200,7 +200,7 @@ class _FormPageState extends State<FormPage> {
                       padding: EdgeInsets.all(5.00),
                       decoration: BoxDecoration(
                         border: Border.all(
-                          color: Color(0xffdc143c),
+                          color: Color(0xFFF44336),
                           width: 1.0
                         ),
                       ),
@@ -209,7 +209,7 @@ class _FormPageState extends State<FormPage> {
                           new Text(
                             "Category : ",
                             style: TextStyle(
-                              color: Color(0xffdc143c),
+                              color: Color(0xFFF44336),
                             ),
                           ),
                           new Radio(
@@ -221,7 +221,7 @@ class _FormPageState extends State<FormPage> {
                           new Text(
                             "Men   ",
                             style: TextStyle(
-                              color: Color(0xffdc143c),
+                              color: Color(0xFFF44336),
                             ),
                           ),
                           new Radio(
@@ -233,7 +233,7 @@ class _FormPageState extends State<FormPage> {
                           new Text(
                             "Women",
                             style: TextStyle(
-                              color: Color(0xffdc143c)
+                              color: Color(0xFFF44336)
                             ),
                           ),
                         ],
@@ -255,18 +255,19 @@ class _FormPageState extends State<FormPage> {
                 Container(
                   margin: EdgeInsets.all(0.0),
                   padding: EdgeInsets.all(0.0),
-                  color: Color(0xfff3b3c0),
+                  color: Color(0xFFFF8080),
                   child: new SizedBox(
                     width: double.maxFinite,
                     height: 60.0,
                     child: new FlatButton(
-                      color: Color(0xfff3b3c0),
+                      color: Color(0xFFFF8080),
                       padding: EdgeInsets.all(0.0),
                       onPressed: _next,
                       child: new Text(
                         "Next",
                         style: TextStyle(
-                          color: Color(0xffdc143c)
+                          fontSize: 15.0,
+                          color: Color(0xFF990000)
                         ),
                       ),
                     ),
