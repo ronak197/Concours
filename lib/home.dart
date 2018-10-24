@@ -9,6 +9,7 @@ import 'package:concours/upcoming_matches.dart';
 import 'package:concours/registration.dart';
 import 'package:concours/leaderboard.dart';
 import 'package:concours/add_matches.dart';
+import 'package:concours/info.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -200,7 +201,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ProfilePage(),
           userData != null && 
           userData["email"] == "chaudharisanket2000@gmail.com" ? 
-          MatchPage() : Page("Information")
+          MatchPage() : InfoPage()
         ],
         controller: tabController
       ),

@@ -17,6 +17,7 @@ class _MatchPageState extends State<MatchPage> {
   String team1, team2;
   String team_id1, team_id2;
   String sport, venue, label;
+  String category;
 
   DateTime timestamp;
 
@@ -39,6 +40,7 @@ class _MatchPageState extends State<MatchPage> {
             "team_id": team_id2,
           }
         ],
+        "category": category,
         "timestamp": timestamp,
         "venue": venue,
         "sport": sport,
@@ -128,6 +130,13 @@ class _MatchPageState extends State<MatchPage> {
               ),
               validator: (value) => _validate(value),
               onSaved: (val) => sport = val,
+            ),
+            TextFormField(
+              decoration: InputDecoration(
+                hintText: "Category"
+              ),
+              validator: (value) => _validate(value),
+              onSaved: (val) => category = val
             ),
             TextFormField(
               decoration: InputDecoration(

@@ -13,31 +13,12 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   initState(){
     super.initState();
-    this.firestoreConfig = new FirestoreConfig("leaderboard");
     this.data = [];
     this.setup();
   }
 
   Future<void> setup() async {
-    var querySnapshot = firestoreConfig.getSnapshot();
-
-    querySnapshot.listen((snapshot){
-      snapshot.documents.forEach((doc){
-        setState((){
-          this.data.add(doc.data);
-        });
-      });
-    });
-  }
-
-  Future<void> _add() async {
-    var data = {
-      "college_name": "Yeah",
-      "rank": 3,
-      "team_name": "Fruit"
-    };
-
-    firestoreConfig.addData("1", data);
+    this.firestoreConfig = new FirestoreConfig("leaderboard");
   }
 
   @override
