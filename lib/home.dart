@@ -10,6 +10,8 @@ import 'package:concours/registration.dart';
 import 'package:concours/leaderboard.dart';
 import 'package:concours/add_matches.dart';
 import 'package:concours/info.dart';
+import 'package:concours/scoreboard_admin.dart';
+import 'package:concours/live_page.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -40,11 +42,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   TabController tabController;
   Map userData;
+  bool admin;
 
   bool isSignedIn = false;
 
   void initState(){
     super.initState();
+    this.admin = false;
     this.isSignedIn = false;
     this.setup();
     tabController = new TabController(
@@ -59,6 +63,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
     setState((){
       this.userData = data;
+      if(data["email"] == "chaudharisanket2000@gmail.com"){
+        this.admin = true;
+      }
     });
 
     print(this.userData);
@@ -195,13 +202,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       ),
       body: TabBarView(
         children: <Widget>[
-          ScoreBoard(),
+          this.admin ? AdminScoreboardPage() : ScoreBoard(),
           LeaderboardPage(),
           UpcomingMatchesPage(),
-          ProfilePage(),
-          userData != null && 
-          userData["email"] == "chaudharisanket2000@gmail.com" ? 
-          MatchPage() : InfoPage()
+          this.admin ? LivePage() : ProfilePage(),
+          this.admin ? MatchPage() : InfoPage()
         ],
         controller: tabController
       ),
