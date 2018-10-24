@@ -8,6 +8,7 @@ import 'package:concours/loginPage.dart';
 import 'package:concours/upcoming_matches.dart';
 import 'package:concours/registration.dart';
 import 'package:concours/leaderboard.dart';
+import 'package:concours/add_matches.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -102,11 +103,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         elevation: 0.0,
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the Drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -201,7 +198,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           LeaderboardPage(),
           UpcomingMatchesPage(),
           ProfilePage(),
-          Page("Information")
+          userData != null && 
+          userData["email"] == "chaudharisanket2000@gmail.com" ? 
+          MatchPage() : Page("Information")
         ],
         controller: tabController
       ),
