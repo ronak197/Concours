@@ -40,17 +40,26 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   TabController tabController;
   Map userData;
-
+  final List<String> titleName = ["Scoreboard","LeaderBoard","Upcoming Matches","Profile","Information"];
   bool isSignedIn = false;
+  String currentTitle;
 
   void initState(){
     super.initState();
     this.isSignedIn = false;
     this.setup();
+    currentTitle = titleName[0];
     tabController = new TabController(
       length: 5,
       vsync: this
     );
+    tabController.addListener(_handleSelected);
+  }
+
+  void _handleSelected(){
+    setState(() {
+      currentTitle = titleName[tabController.index];
+    });
   }
 
   Future<void> setup() async {
@@ -90,10 +99,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          "Concours",
+          currentTitle,
           textAlign: TextAlign.center,
           style: TextStyle(
+            fontWeight: FontWeight.normal,
             color: Colors.red
           )
         ),

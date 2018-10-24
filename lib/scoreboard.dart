@@ -19,79 +19,83 @@ class _ScoreBoardState extends State<ScoreBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 10.0),
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Container(
-              alignment: Alignment.topLeft,
-              padding: EdgeInsets.all(15.0),
-              color: Color(0xFFFEECEC),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    sportName,
-                    style: TextStyle(
-                      color: Color(0xFFff5252),
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold
-                    )
-                  ),
-                  Text(
-                    matchType,
-                    style: TextStyle(
-                      color: Color(0xffff5252),
-                      fontSize: 15.0
-                    )
-                  )
-                ]
-              )
-            ),
-            Container(
-              color: Color(0xffff5252),
-              padding: EdgeInsets.all(15.0),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.only(
-                      bottom: 15.0
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              TextLabel(teamName1, true),
-                              TextLabel(playersTeam1, false)
-                            ]
-                          ),
-                        ),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              TextLabel(teamName2, true),
-                              TextLabel(playersTeam2, false)
-                            ]
-                          ),
+    return ListView(
+      children: <Widget>[
+        Card(
+          margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 10.0),
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.all(15.0),
+                  color: Color(0xFFFEECEC),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        sportName,
+                        style: TextStyle(
+                          color: Color(0xFFff5252),
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.bold
                         )
-                      ]
-                    ),
-                  ),
-                  Score(scoreTeam1,scoreTeam2),
-                ]
-              )
-            ),
-            Info()
-          ]
-        )
-      ),
+                      ),
+                      Text(
+                        matchType,
+                        style: TextStyle(
+                          color: Color(0xffff5252),
+                          fontSize: 15.0
+                        )
+                      )
+                    ]
+                  )
+                ),
+                Container(
+                  color: Color(0xffff5252),
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(
+                          bottom: 15.0
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  TextLabel(teamName1, true),
+                                  TextLabel(playersTeam1, false)
+                                ]
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  TextLabel(teamName2, true),
+                                  TextLabel(playersTeam2, false)
+                                ]
+                              ),
+                            )
+                          ]
+                        ),
+                      ),
+                      Score(scoreTeam1,scoreTeam2),
+                    ]
+                  )
+                ),
+                Info()
+              ]
+            )
+          ),
+        ),
+      ]
     );
   }
 }
@@ -134,7 +138,6 @@ class Info extends StatelessWidget {
                     )
                   )
                 ),
-                
               ],
             )
           )
@@ -155,19 +158,6 @@ class Score extends StatelessWidget {
       padding: EdgeInsets.all(5.0),
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Text(
-                  "Score",
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.white
-                  )
-                )
-              )
-            ]
-          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -193,6 +183,7 @@ class ScoreText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: 30.0,
         color: Colors.white,
