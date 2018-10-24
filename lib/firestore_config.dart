@@ -1,22 +1,28 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+
 class FirestoreConfig {
   CollectionReference collectionReference;
   DocumentReference userReference;
 
-  FirestoreConfig(){
-    collectionReference = Firestore.instance.collection("users");
-    userReference = collectionReference.document("sanket");
-    userReference.get()
-      .then((datasnapshot){
-        if(datasnapshot.exists){
-          print(datasnapshot.data["name"]);
-        } else {
-          print("Data does not exist");
-        }
-      });
+  FirestoreConfig(String collectionName){
+    collectionReference = Firestore.instance.collection(collectionName);
   }
 
-  DocumentReference getDocument(String documentName){
-    return collectionReference.document(documentName);
+  Stream<QuerySnapshot> getSnapshot(){
+    return collectionReference.snapshots();
+  }
+
+  Future<void> addData(String documentName, Map data) async {
+    userReference = collectionReference.document(documentName);
+
+    userReference.setData(data)
+      .whenComplete((){
+        print("Successfully Added");
+      })
+      .catchError((e){
+        print("Error in adding Data $e");
+      });
   }
 }

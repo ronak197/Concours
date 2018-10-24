@@ -22,6 +22,8 @@ dependencies:
   firebase_auth:
   google_sign_in:
   cloud_firestore:
+  intl:
+  datetime_picker_formfield:
 
 dev_dependencies:
   flutter_test:

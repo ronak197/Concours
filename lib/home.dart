@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
+// Concours Files
 import 'package:concours/scoreboard.dart';
 import 'package:concours/profile.dart';
 import 'package:concours/user_config.dart';
 import 'package:concours/loginPage.dart';
+import 'package:concours/upcoming_matches.dart';
 import 'package:concours/registration.dart';
+import 'package:concours/leaderboard.dart';
+import 'package:concours/add_matches.dart';
+import 'package:concours/info.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -99,11 +104,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         elevation: 0.0,
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the Drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -144,7 +145,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         )
                       )
                     ],
-                  )        
+                  )
                 ]
               ),
               decoration: BoxDecoration(
@@ -159,7 +160,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 ]
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationPage()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegistrationPage()
+                  )
+                );
               },
             ),
             ListTile(
@@ -170,8 +176,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 ]
               ),
               onTap: () {
-                // Update the state of the app
-                // ...
+                
               },
             ),
             ListTile(
@@ -191,10 +196,12 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       body: TabBarView(
         children: <Widget>[
           ScoreBoard(),
-          Page("Leaderboard"),
-          Page("Upcoming Matches"),
+          LeaderboardPage(),
+          UpcomingMatchesPage(),
           ProfilePage(),
-          Page("Information")
+          userData != null && 
+          userData["email"] == "chaudharisanket2000@gmail.com" ? 
+          MatchPage() : InfoPage()
         ],
         controller: tabController
       ),

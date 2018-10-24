@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'registration.dart';
 
@@ -70,15 +69,15 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
   }
 //
   void _register(){
-    int count=0;
-    for(int i=0; i<playerInfoSteps.length; i+=1) {
+    int count = 0;
+    for(int i = 0; i < playerInfoSteps.length; i++) {
       final form = playerInfoSteps[i].formKey.currentState;
-      if (form.validate()) {
-         form.save();
-         ++count;
+      if(form.validate()) {
+        form.save();
+        count++;
       }
     }
-    if(count==playerInfoSteps.length){
+    if(count == playerInfoSteps.length){
 
       Map<String,dynamic> data = new Map();
 
@@ -102,7 +101,7 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
   }
 
   void sendToFireStore(var data){
-    DocumentReference documentReference = Firestore.instance.document("${teamInfo.selectedSport}/${teamInfo.category}/");
+    DocumentReference documentReference = Firestore.instance.document("${teamInfo.selectedSport}/${teamInfo.teamName}/");
     documentReference.setData(data)
         .whenComplete((){
       print("Document Added");
@@ -131,8 +130,7 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
         ),
         centerTitle: true,
       ),
-      body:
-      Column(
+      body: ListView(
         children: <Widget>[
           Container(
             child: new Padding(
@@ -147,52 +145,50 @@ class _AddPlayersPageState extends State<AddPlayersPage> with TickerProviderStat
                         fontSize: 20.0,
                       ),
                     ),
-                   Container(
-                     constraints: BoxConstraints.loose(new Size(double.maxFinite,450.0)),
-                     child: new Stepper(
-                       steps: getListOfSteps(),
-                       currentStep: currentStep,
-                       onStepContinue: changeCurrentStepContinue,
-                       onStepCancel: changeCurrentStepCancel,
-                       onStepTapped: changeCurrentStepTapped,
-                     ),
-                  ),
+                    Container(
+                      constraints: BoxConstraints.loose(new Size(double.maxFinite,450.0)),
+                      child: new Stepper(
+                        steps: getListOfSteps(),
+                        currentStep: currentStep,
+                        onStepContinue: changeCurrentStepContinue,
+                        onStepCancel: changeCurrentStepCancel,
+                        onStepTapped: changeCurrentStepTapped,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
-          Expanded(
-              child:Column(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget> [
-                    Container(
-                      margin: EdgeInsets.all(0.0),
-                      padding: EdgeInsets.all(0.0),
+          Container(
+            child:Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget> [
+                Container(
+                  margin: EdgeInsets.all(0.0),
+                  padding: EdgeInsets.all(0.0),
+                  color: Color(0xfff3b3c0),
+                  child: new SizedBox(
+                    width: double.maxFinite,
+                    height: 60.0,
+                    child: new FlatButton(
                       color: Color(0xfff3b3c0),
-                      child: new SizedBox(
-                        width: double.maxFinite,
-                        height: 60.0,
-                        child: new FlatButton(
-                          color: Color(0xfff3b3c0),
-                          padding: EdgeInsets.all(0.0),
-                          onPressed: _register,
-                          child: new Text(
-                            "Register",
-                            style: TextStyle(
-                                color: Color(0xffdc143c)
-                            ),
-                          ),
+                      padding: EdgeInsets.all(0.0),
+                      onPressed: _register,
+                      child: new Text(
+                        "Register",
+                        style: TextStyle(
+                          color: Color(0xffdc143c)
                         ),
                       ),
-                    )
-                  ]
-              )
+                    ),
+                  ),
+                )
+              ]
+            )
           )
-          ,
         ],
-        mainAxisSize: MainAxisSize.max,
       ),
     );
   }
