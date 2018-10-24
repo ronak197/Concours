@@ -29,6 +29,17 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
       });
     });
   }
+
+  Future<void> _add() async {
+    var data = {
+      "college_name": "Yeah",
+      "rank": 3,
+      "team_name": "Fruit"
+    };
+
+    firestoreConfig.addData("1", data);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(

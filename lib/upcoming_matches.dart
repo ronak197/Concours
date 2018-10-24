@@ -22,8 +22,21 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
 
   Future<void> setup() async {
     var querySnapshot = firestoreConfig.getSnapshot();
-
+    
+    
     querySnapshot.listen((snapshot){
+      List docs = snapshot.documents;
+
+      docs.sort((match1, match2){
+        var r = match1.data["timestamp"].compareTo(match2.data["timestamp"]);
+        return r;
+      });
+
+      setState((){
+        this.data = [];
+      });
+
+      print(docs);
       snapshot.documents.forEach((doc){
         print('${doc.data["timestamp"]} ${DateTime.now()}');
 
@@ -100,6 +113,7 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
 class CardHeader extends StatelessWidget {
   final String heading;
   final String subHeading;
+
   CardHeader({this.heading, this.subHeading});
   @override
   Widget build(BuildContext context) {
