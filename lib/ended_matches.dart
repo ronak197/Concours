@@ -50,6 +50,7 @@ class _EndedMatchesPageState extends State<EndedMatchesPage> {
   }
 
   Future<void> _revive(Map match) async {
+    match["live"] = true;
     firestoreConfig.addData(match["id"], match);
   }
 

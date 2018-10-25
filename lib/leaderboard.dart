@@ -69,10 +69,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView.builder(
+      color: Colors.white,
+      child: this.data.length != 0 ? ListView.builder(
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index){
-          var formatter = new DateFormat('HH:mm');
 
           return Card(
             margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 5.0,top: 5.0),
@@ -147,6 +147,14 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             ) 
           );
         },
+      ) : Center(
+        child: Text(
+          "Nothing to Show!",
+          style: TextStyle(
+            fontSize: 15.0,
+            color: Colors.grey
+          )
+        )
       )
     );
   }

@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 
 // Concours Files
 import 'package:concours/scoreboard.dart';
-import 'package:concours/profile.dart';
 import 'package:concours/user_config.dart';
 import 'package:concours/loginPage.dart';
 import 'package:concours/upcoming_matches.dart';
-import 'package:concours/registration.dart';
 import 'package:concours/leaderboard.dart';
 import 'package:concours/add_matches.dart';
 import 'package:concours/info.dart';

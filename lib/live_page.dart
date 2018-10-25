@@ -3,6 +3,18 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:concours/firestore_config.dart';
 
+class LiveScaffold extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Live Page"),
+      ),
+      body: LivePage()
+    );
+  }
+}
+
 class LivePage extends StatefulWidget {
   @override
   _LivePageState createState() => _LivePageState();
@@ -39,9 +51,11 @@ class _LivePageState extends State<LivePage> {
       });
 
       docs.forEach((doc){
-        setState((){
-          this.data.add(doc.data);
-        });
+        if(doc.data["live"]){
+          setState((){
+            this.data.add(doc.data);
+          });
+        }
       });
     });
   }
