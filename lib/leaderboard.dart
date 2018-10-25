@@ -123,7 +123,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                       children: <Widget>[
                         Text(
                           "${this.data[index]["result"]} won by " +
-                          "${this.data[index]["participants"][0]["score"] - this.data[index]["participants"][1]["score"]}}",
+                          "${(this.data[index]["participants"][0]["score"] - this.data[index]["participants"][1]["score"]).abs()}",
                           style: TextStyle(
                             color: Colors.black54,
                           ),
