@@ -66,8 +66,8 @@ class _LivePageState extends State<LivePage> {
     firestoreConfig.addData(data["id"], data);
   }
 
-  Future<void> _wins(Map data, int team_number) async {
-    data["results"] = data["participants"][team_number]["team"];
+  Future<void> _wins(Map data, int teamNumber) async {
+    data["result"] = data["participants"][teamNumber]["team"];
     firestoreConfig.addData(data["id"], data);
   }
 
