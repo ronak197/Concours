@@ -12,6 +12,7 @@ import 'package:concours/add_matches.dart';
 import 'package:concours/info.dart';
 import 'package:concours/scoreboard_admin.dart';
 import 'package:concours/live_page.dart';
+import 'package:concours/ended_matches.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -174,22 +175,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             ListTile(
               title: Row(
                 children: <Widget> [
-                  Icon(Icons.group_add),
-                  Text(' Add Team'),
-                ]
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => RegistrationPage()
-                  )
-                );
-              },
-            ),
-            ListTile(
-              title: Row(
-                children: <Widget> [
                   Icon(Icons.info),
                   Text(' About'),
                 ]
@@ -209,6 +194,19 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 _signOut();
               },
             ),
+            this.admin ? ListTile(
+              title: Text("Ended"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EndedMatchesScaffold()
+                  )
+                );
+              }
+            ) : Padding(
+              padding: EdgeInsets.all(0.0)
+            )
           ],
         ),
       ),

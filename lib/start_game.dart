@@ -73,7 +73,7 @@ class StartGamePageState extends State<StartGamePage> {
     widget.match["type"] = widget.matchType;
     widget.match["id"] = widget.match["id"] + widget.matchType;
 
-    await firestoreConfig.addData(widget.match["id"] + widget.matchType, widget.match);
+    await firestoreConfig.addData(widget.match["id"], widget.match);
   
   }
 

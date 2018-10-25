@@ -70,22 +70,12 @@ class _AdminScoreboardPageState extends State<AdminScoreboardPage> {
     return "success";
   }
 
-  Future<String> _pause(Map match) async {
-    FirestoreConfig firestoreConfig;
-    firestoreConfig = new FirestoreConfig("live");
-
-    match["draft"] = true;
-
-    await firestoreConfig.addData(match["id"], match);
-    return "success";
-  }
-
   Future<String> _end(Map match, String matchType) async {
     match["live"] = false;
 
     FirestoreConfig firestoreConfig;
     firestoreConfig = new FirestoreConfig("ended");
-    firestoreConfig.addData(match["id"] + matchType, match);
+    firestoreConfig.addData(match["id"], match);
 
     firestoreConfig = new FirestoreConfig("live");
     await firestoreConfig.deleteData(match["id"] + matchType);
