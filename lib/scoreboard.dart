@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:concours/firestore_config.dart';
 
 
 class ScoreBoard extends StatefulWidget {
@@ -7,6 +8,9 @@ class ScoreBoard extends StatefulWidget {
 }
 
 class _ScoreBoardState extends State<ScoreBoard> {
+  FirestoreConfig firestoreConfig;
+  List data;
+  Map _reference;
 
   String teamName1 = "TeamName1";
   String teamName2 = "TeamName2";
@@ -18,10 +22,44 @@ class _ScoreBoardState extends State<ScoreBoard> {
   int scoreTeam2 = 8;
 
   @override
+  void initState(){
+    super.initState();
+
+    this.firestoreConfig = new FirestoreConfig("live");
+    this._reference = {
+      "1S": "1st Singles",
+      "2S": "2nd Singles",
+      "3S": "3rd Singles",
+      "1D": "1st Doubles",
+      "2D": "2nd Doubles"
+    };
+    this.data = [];
+    this.setup();
+  }
+
+  Future<void> setup() async {
+    Stream querySnapshot = firestoreConfig.getSnapshot();
+
+    querySnapshot.listen((snapshot){
+      List docs = snapshot.documents;
+
+      setState((){
+        this.data = [];
+        docs.forEach((doc){
+          if(doc.data["live"]){
+            this.data.add(doc.data);
+          }
+        });
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        Card(
+    return this.data.length != 0 ? ListView.builder(
+      itemCount: this.data.length,
+      itemBuilder: (BuildContext context, int index){
+        return Card(
           margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 10.0),
           child: Container(
             color: Colors.white,
@@ -36,7 +74,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        sportName,
+                        this.data[index]["sport"],
                         style: TextStyle(
                           color: Color(0xFFff5252),
                           fontSize: 17.0,
@@ -44,7 +82,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
                         )
                       ),
                       Text(
-                        matchType,
+                        this._reference[data[index]["type"]],
                         style: TextStyle(
                           color: Color(0xffff5252),
                           fontSize: 15.0
@@ -69,8 +107,8 @@ class _ScoreBoardState extends State<ScoreBoard> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  TextLabel(teamName1, true),
-                                  TextLabel(playersTeam1, false)
+                                  TextLabel(this.data[index]["participants"][0]["team"], true),
+                                  TextLabel(this.data[index]["participants"][0]["name"], false)
                                 ]
                               ),
                             ),
@@ -78,29 +116,52 @@ class _ScoreBoardState extends State<ScoreBoard> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: <Widget>[
-                                  TextLabel(teamName2, true),
-                                  TextLabel(playersTeam2, false)
+                                  TextLabel(this.data[index]["participants"][1]["team"], true),
+                                  TextLabel(this.data[index]["participants"][1]["name"], false)
                                 ]
                               ),
                             )
                           ]
                         ),
                       ),
-                      Score(scoreTeam1,scoreTeam2),
+                      Score(
+                        this.data[index]["participants"][0]["score"],
+                        this.data[index]["participants"][1]["score"]
+                      ),
                     ]
                   )
                 ),
-                Info()
+                Info(
+                  "${this.data[index]["sport"]}, ${this._reference[this.data[index]["type"]]}",
+                  "${this.data[index]["participants"][0]["name"]} from " +
+                  "team ${this.data[index]["participants"][0]["team"]} " +
+                  "vs " +
+                  "${this.data[index]["participants"][1]["name"]} from " +
+                  "team ${this.data[index]["participants"][1]["team"]} "
+                )
               ]
             )
           ),
-        ),
-      ]
+        );
+      }
+    ) : Center(
+      child: Text(
+        "No Ongoing matches",
+        style: TextStyle(
+          fontSize: 15.0,
+          color: Colors.grey
+        )
+      )
     );
   }
 }
 
 class Info extends StatelessWidget {
+  final String title;
+  final String content;
+
+  Info(this.title, this.content);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -117,7 +178,7 @@ class Info extends StatelessWidget {
                     bottom: 5.0
                   ),
                   child: Text(
-                    "Badminton Singles",
+                    this.title,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.red,
@@ -131,7 +192,7 @@ class Info extends StatelessWidget {
                     bottom: 5.0
                   ),
                   child: Text(
-                    "Sanket Chaudhari from team Cocktail vs Sumeet Varma from team FruitSalad",
+                    this.content,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                       color: Colors.red

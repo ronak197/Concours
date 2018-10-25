@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreConfig {
   CollectionReference collectionReference;
-  DocumentReference userReference;
+  DocumentReference dataReference;
 
   FirestoreConfig(String collectionName){
     collectionReference = Firestore.instance.collection(collectionName);
@@ -15,14 +15,26 @@ class FirestoreConfig {
   }
 
   Future<void> addData(String documentName, Map data) async {
-    userReference = collectionReference.document(documentName);
+    dataReference = collectionReference.document(documentName);
 
-    userReference.setData(data)
+    dataReference.setData(data)
       .whenComplete((){
         print("Successfully Added");
       })
       .catchError((e){
         print("Error in adding Data $e");
+      });
+  }
+
+  Future<void> deleteData(String documentName) async {
+    dataReference = collectionReference.document(documentName);
+
+    dataReference.delete()
+      .whenComplete((){
+        print("Successfully Deleted");
+      })
+      .catchError((e){
+        print("Error occured in deleting data $e");
       });
   }
 }

@@ -51,9 +51,6 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
           doc.data["timesince"] = dateFormatter.format(doc.data["timestamp"]);
         }
 
-
-
-
         if(matchTime.isAfter(DateTime.now())){
           setState((){
             this.data.add(doc.data);
@@ -61,7 +58,6 @@ class _UpcomingMatchesPageState extends State<UpcomingMatchesPage> {
         }
       });
     });
-
   }
 
   @override
