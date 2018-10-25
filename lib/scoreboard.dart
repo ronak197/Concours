@@ -144,12 +144,15 @@ class _ScoreBoardState extends State<ScoreBoard> {
           ),
         );
       }
-    ) : Center(
-      child: Text(
-        "No Ongoing matches",
-        style: TextStyle(
-          fontSize: 15.0,
-          color: Colors.grey
+    ) : Container(
+      color: Colors.white,
+      child: Center(
+        child: Text(
+          "No Ongoing matches",
+          style: TextStyle(
+            fontSize: 15.0,
+            color: Colors.grey
+          )
         )
       )
     );

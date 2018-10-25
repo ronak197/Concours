@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'firestore_config.dart';
 
 class InfoPage extends StatefulWidget {
   @override

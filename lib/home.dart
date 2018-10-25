@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 
 // Concours Files
 import 'package:concours/scoreboard.dart';
-import 'package:concours/user_config.dart';
-import 'package:concours/loginPage.dart';
 import 'package:concours/upcoming_matches.dart';
 import 'package:concours/leaderboard.dart';
-import 'package:concours/add_matches.dart';
 import 'package:concours/info.dart';
-import 'package:concours/scoreboard_admin.dart';
-import 'package:concours/live_page.dart';
-import 'package:concours/ended_matches.dart';
 import 'package:concours/about.dart';
 
 @immutable
@@ -41,18 +35,17 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   TabController tabController;
-  Map userData;
   String currentTitle;
 
-  bool admin;
-  bool isSignedIn = false;
-  final List<String> titleName = ["Scoreboard","Past Matches","Upcoming Matches","Profile","Information"];
+  final List<String> titleName = [
+    "Scoreboard",
+    "Past Matches",
+    "Upcoming Matches",
+    "Information"
+    ];
 
   void initState(){
     super.initState();
-    this.admin = false;
-    this.isSignedIn = false;
-    this.setup();
     currentTitle = titleName[0];
     tabController = new TabController(
       length: 5,
@@ -65,37 +58,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     setState(() {
       currentTitle = titleName[tabController.index];
     });
-  }
-
-  Future<void> setup() async {
-    UserConfig userConfig = new UserConfig();
-    Map data = await userConfig.getUser();
-
-    setState((){
-      this.userData = data;
-      if(data["email"] == "chaudharisanket2000@gmail.com"){
-        this.admin = true;
-      }
-    });
-
-    print(this.userData);
-  }
-
-  void _signOut() async {
-    UserConfig userConfig = new UserConfig();
-    await userConfig.signOut();
-
-    if(!userConfig.isSignedIn){
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginPage()
-        ),
-        (Route<dynamic> route) => false
-      );
-    }
-    
-    print("User Sign Out");
   }
 
   void dispose(){
@@ -130,37 +92,33 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  userData != null ? Container(
+                  Container(
                     width: 70.0,
                     height: 70.0,
                     margin: EdgeInsets.only(
                       bottom: 15.0
                     ),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Image.asset(
+                        "./assets/logo.png",
+                        height: 50.0,
+                        width: 50.0
+                      )
+                    ),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                          userData["photoUrl"]
-                        )
-                      )
                     )
-                  ) : CircleAvatar(
-                    child: Icon(Icons.person)
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        userData != null ? userData["displayName"] : "",
+                        "Concours '18",
                         style: TextStyle(
-                          color: Colors.white
-                        )
-                      ),
-                      Text(
-                        userData != null ? userData["email"] : "",
-                        style: TextStyle(
-                          color: Colors.white
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold
                         )
                       )
                     ],
@@ -187,52 +145,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                 );
               },
             ),
-            ListTile(
-              title: Row(
-                children: <Widget> [
-                  Icon(Icons.power_settings_new),
-                  Text(' Log Out')
-                ]
-              ),
-              onTap: () {
-                _signOut();
-              },
-            ),
-            this.admin ? ListTile(
-              title: Text("Ended"),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EndedMatchesScaffold()
-                  )
-                );
-              }
-            ) : Padding(
-              padding: EdgeInsets.all(0.0)
-            ),
-            this.admin ? ListTile(
-              title: Text("Live"),
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LiveScaffold()
-                  )
-                );
-              }
-            ) : Padding(
-              padding: EdgeInsets.all(0.0)
-            ),
           ],
         ),
       ),
       body: TabBarView(
         children: <Widget>[
-          this.admin ? AdminScoreboardPage() : ScoreBoard(),
+          ScoreBoard(),
           LeaderboardPage(),
           UpcomingMatchesPage(),
-          this.admin ? MatchPage() : InfoPage()
+          InfoPage()
         ],
         controller: tabController
       ),

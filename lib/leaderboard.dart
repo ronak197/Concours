@@ -134,7 +134,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                       children: <Widget>[
                         Text(
                           "${this.data[index]["result"]} won by " +
-                          "${(this.data[index]["participants"][0]["score"] - this.data[index]["participants"][1]["score"]).abs()}",
+                          "${(this.data[index]["participants"][0]["score"] - this.data[index]["participants"][1]["score"]).abs()}  " +
+                          "${this.data[index]["participants"][0]["score"]}/${this.data[index]["participants"][1]["score"]}"                          
+                          ,
                           style: TextStyle(
                             color: Colors.black54,
                           ),
@@ -149,7 +151,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
         },
       ) : Center(
         child: Text(
-          "Nothing to Show!",
+          "No Past Matches!",
           style: TextStyle(
             fontSize: 15.0,
             color: Colors.grey
