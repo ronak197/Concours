@@ -13,6 +13,7 @@ import 'package:concours/info.dart';
 import 'package:concours/scoreboard_admin.dart';
 import 'package:concours/live_page.dart';
 import 'package:concours/ended_matches.dart';
+import 'package:concours/about.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -176,11 +177,16 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               title: Row(
                 children: <Widget> [
                   Icon(Icons.info),
-                  Text(' About'),
+                  Text(' About Us'),
                 ]
               ),
               onTap: () {
-                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AboutPage()
+                  )
+                );
               },
             ),
             ListTile(
