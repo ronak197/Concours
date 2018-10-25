@@ -15,7 +15,7 @@ class _MatchPageState extends State<MatchPage> {
   
   String college1, college2;
   String team1, team2;
-  String team_id1, team_id2;
+  String teamID1, teamID2;
   String sport, venue, label;
   String category;
 
@@ -32,12 +32,12 @@ class _MatchPageState extends State<MatchPage> {
           {
             "college": college1,
             "team": team1,
-            "team_id": team_id1
+            "team_id": teamID1
           },
           {
             "college": college2,
             "team": team2,
-            "team_id": team_id2,
+            "team_id": teamID2,
           }
         ],
         "category": category,
@@ -47,7 +47,7 @@ class _MatchPageState extends State<MatchPage> {
         "label": label
       };
 
-      firestoreConfig.addData(team_id1 + "vs" + team_id2 + timestamp.toString(), data);
+      firestoreConfig.addData(teamID1 + "vs" + teamID2 + timestamp.toString(), data);
       return true;
     }
 
@@ -91,7 +91,7 @@ class _MatchPageState extends State<MatchPage> {
                 hintText: "Team ID"
               ),
               validator: (value) => _validate(value),
-              onSaved: (val) => team_id1 = val,
+              onSaved: (val) => teamID1 = val,
             ),
             SizedBox(
               height: 30.0
@@ -116,7 +116,7 @@ class _MatchPageState extends State<MatchPage> {
                 hintText: "Team ID"
               ),
               validator: (value) => _validate(value),
-              onSaved: (val) => team_id2 = val,
+              onSaved: (val) => teamID2 = val,
             ),
             SizedBox(
               height: 30.0
