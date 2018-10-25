@@ -9,11 +9,16 @@ class AboutPage extends StatelessWidget {
       ),
       body: ListView(
         children: <Widget>[
-          Text(
-            "Developers",
-            style: TextStyle(
-              fontWeight: FontWeight.bold
-            )
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: Text(
+              "Developers",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 25.0,
+                fontWeight: FontWeight.bold,    
+              )
+            ),
           ),
           ListTile(
             title: Text("Ronak Jain (@ronak197)")
