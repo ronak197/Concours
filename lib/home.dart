@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   bool admin;
   bool isSignedIn = false;
-  final List<String> titleName = ["Scoreboard","LeaderBoard","Upcoming Matches","Profile","Information"];
+  final List<String> titleName = ["Scoreboard","Past Matches","Upcoming Matches","Profile","Information"];
 
   void initState(){
     super.initState();
@@ -212,7 +212,20 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
               }
             ) : Padding(
               padding: EdgeInsets.all(0.0)
-            )
+            ),
+            this.admin ? ListTile(
+              title: Text("Live"),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LiveScaffold()
+                  )
+                );
+              }
+            ) : Padding(
+              padding: EdgeInsets.all(0.0)
+            ),
           ],
         ),
       ),
@@ -221,7 +234,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           this.admin ? AdminScoreboardPage() : ScoreBoard(),
           LeaderboardPage(),
           UpcomingMatchesPage(),
-          this.admin ? LivePage() : ProfilePage(),
           this.admin ? MatchPage() : InfoPage()
         ],
         controller: tabController
@@ -239,9 +251,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
             ),
             Tab(
               child: Icon(Icons.schedule)
-            ),
-            Tab(
-              child: Icon(Icons.person)
             ),
             Tab(
               child: Icon(Icons.info)
