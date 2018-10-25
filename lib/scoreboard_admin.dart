@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+
 import 'package:concours/firestore_config.dart';
+import 'package:concours/start_game.dart';
 
 class AdminScoreboardPage extends StatefulWidget {
   @override
@@ -10,13 +12,15 @@ class AdminScoreboardPage extends StatefulWidget {
 
 class _AdminScoreboardPageState extends State<AdminScoreboardPage> {
   List data;
+  List inputFields;
   final formatter = new DateFormat('HH:mm, d MMM');
 
   @override
   void initState(){
     super.initState();
-    
+
     this.data = [];
+    this.inputFields = [];
     this.setup();
   }
 
@@ -39,6 +43,10 @@ class _AdminScoreboardPageState extends State<AdminScoreboardPage> {
 
       docs.forEach((doc){
         doc.data["id"] = doc.documentID;
+        if(doc.data["live"] == null){
+          doc.data["live"] = false;
+        }
+
         var matchTime = DateTime.parse(doc.data["timestamp"].toString());
 
         if(matchTime.isBefore(DateTime.now())){
@@ -50,17 +58,15 @@ class _AdminScoreboardPageState extends State<AdminScoreboardPage> {
     });
   }
 
-  Future<String> _start(Map match) async {
-    FirestoreConfig firestoreConfig;
-    firestoreConfig = new FirestoreConfig("live");
-    match["participants"][0]["score"] = 0;
-    match["participants"][1]["score"] = 0;
-    
-    match["draft"] = false;
-    match["live"] = true;
-    match["result"] = "";
-
-    await firestoreConfig.addData(match["id"], match);
+  Future<String> _start(Map match, String matchType) async {
+    if(match["type"] == null || !match["type"].contains(matchType)){
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => StartGameScaffold(match, matchType)
+        )
+      );
+    }
     return "success";
   }
 
@@ -74,13 +80,16 @@ class _AdminScoreboardPageState extends State<AdminScoreboardPage> {
     return "success";
   }
 
-  Future<String> _end(Map match) async {
-    FirestoreConfig firestoreConfig;
-    firestoreConfig = new FirestoreConfig("live");
-
+  Future<String> _end(Map match, String matchType) async {
     match["live"] = false;
 
-    await firestoreConfig.addData(match["id"], match);
+    FirestoreConfig firestoreConfig;
+    firestoreConfig = new FirestoreConfig("ended");
+    firestoreConfig.addData(match["id"] + matchType, match);
+
+    firestoreConfig = new FirestoreConfig("live");
+    await firestoreConfig.deleteData(match["id"] + matchType);
+
     return "success";
   }
 
@@ -102,27 +111,79 @@ class _AdminScoreboardPageState extends State<AdminScoreboardPage> {
                     Text("${this.data[index]["participants"][1]["college"]}"),
                     Row(
                       children: <Widget>[
-                        RaisedButton(
-                          child: Text(
-                            "Start",
-                          ),
-                          onPressed: () => _start(this.data[index]),
+                        Expanded(
+                          child: Text("1S")
                         ),
                         RaisedButton(
-                          child: Text(
-                            "Pause"
-                          ),
-                          onPressed: () => _pause(this.data[index])
+                          child: Icon(Icons.stop),
+                          onPressed: () => _end(this.data[index], "1S"),
                         ),
                         RaisedButton(
-                          child: Text(
-                            "End"
-                          ),
-                          onPressed: () => _end(this.data[index]),
-                        )
-                      ],
+                          child: Icon(Icons.play_arrow),
+                          onPressed: () => _start(this.data[index], "1S"),
+                        ),
+                      ]
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text("1D")
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.stop),
+                          onPressed: () => _end(this.data[index], "1D"),
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.play_arrow),
+                          onPressed: () => _start(this.data[index], "1D"),
+                        ),
+                      ]
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text("2S")
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.stop),
+                          onPressed: () => _end(this.data[index], "2S"),
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.play_arrow),
+                          onPressed: () => _start(this.data[index], "2S"),
+                        ),
+                      ]
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text("2D")
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.stop),
+                          onPressed: () => _end(this.data[index], "2D"),
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.play_arrow),
+                          onPressed: () => _start(this.data[index], "2D"),
+                        ),
+                      ]
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Text("3S")
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.stop),
+                          onPressed: () => _end(this.data[index], "3S"),
+                        ),
+                        RaisedButton(
+                          child: Icon(Icons.play_arrow),
+                          onPressed: () => _start(this.data[index], "3S"),
+                        ),
+                      ]
                     )
-                    
                   ]
                 )
               ]
