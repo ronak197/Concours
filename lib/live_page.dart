@@ -48,27 +48,35 @@ class _LivePageState extends State<LivePage> {
 
   Future<void> _plus1(Map data) async {
     data["participants"][0]["score"]++;
-    this.firestoreConfig.addData(data["id"], data);
+    this.firestoreConfig.addData(data["id"] + data["type"], data);
   }
 
   Future<void> _plus2(Map data) async {
     data["participants"][1]["score"]++;
-    firestoreConfig.addData(data["id"], data);
+    firestoreConfig.addData(data["id"] + data["type"], data);
   }
 
   Future<void> _minus1(Map data) async {
     data["participants"][0]["score"]--;
-    firestoreConfig.addData(data["id"], data);
+    firestoreConfig.addData(data["id"] + data["type"], data);
   }
 
   Future<void> _minus2(Map data) async {
     data["participants"][1]["score"]--;
-    firestoreConfig.addData(data["id"], data);
+    firestoreConfig.addData(data["id"] + data["type"], data);
   }
 
   Future<void> _wins(Map data, int teamNumber) async {
     data["result"] = data["participants"][teamNumber]["team"];
-    firestoreConfig.addData(data["id"], data);
+    
+    data["live"] = false;
+    firestoreConfig.addData(data["id"] + data["type"], data);
+
+    firestoreConfig = new FirestoreConfig("ended");
+    firestoreConfig.addData(data["id"] + data["type"], data);
+
+    firestoreConfig = new FirestoreConfig("live");
+    
   }
 
   @override
