@@ -10,14 +10,23 @@ class LeaderboardPage extends StatefulWidget {
 class _LeaderboardPageState extends State<LeaderboardPage> {
   FirestoreConfig firestoreConfig;
   List data = [];
+  Map _reference;
   
   /// Initializes schedule collection
   @override
   initState(){
     super.initState();
     firestoreConfig = new FirestoreConfig("ended");
-    this.setup();
     this.data = [];
+    this._reference = {
+      "1S": "1st Singles",
+      "2S": "2nd Singles",
+      "3S": "3rd Singles",
+      "1D": "1st Doubles",
+      "2D": "2nd Doubles"
+    };
+
+    this.setup();
   }
 
   Future<void> setup() async {
@@ -71,7 +80,9 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
               child: Column(
                 children: <Widget>[
                   CardHeader(
-                    "${this.data[index]["sport"]} (${this.data[index]["label"]})",
+                    "${this.data[index]["sport"]} " + 
+                    "${this._reference[this.data[index]["type"]]} " + 
+                    "(${this.data[index]["label"]})",
                     this.data[index]["category"]
                   ),
                   Row(

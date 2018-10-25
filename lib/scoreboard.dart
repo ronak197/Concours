@@ -46,7 +46,9 @@ class _ScoreBoardState extends State<ScoreBoard> {
       setState((){
         this.data = [];
         docs.forEach((doc){
-          this.data.add(doc.data);
+          if(doc.data["live"]){
+            this.data.add(doc.data);
+          }
         });
       });
     });
@@ -54,7 +56,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return this.data.length != 0 ? ListView.builder(
       itemCount: this.data.length,
       itemBuilder: (BuildContext context, int index){
         return Card(
@@ -142,6 +144,14 @@ class _ScoreBoardState extends State<ScoreBoard> {
           ),
         );
       }
+    ) : Center(
+      child: Text(
+        "No Ongoing matches",
+        style: TextStyle(
+          fontSize: 15.0,
+          color: Colors.grey
+        )
+      )
     );
   }
 }
