@@ -1,8 +1,3 @@
-# concours
+# Concours
 
-A new Flutter project.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+contact sanket143@zoho.com for google-services.json file.
