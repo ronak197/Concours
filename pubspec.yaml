@@ -22,6 +22,7 @@ dependencies:
   firebase_auth:
   google_sign_in:
   cloud_firestore:
+  flutter_svg:
   intl:
   datetime_picker_formfield:
 
@@ -34,6 +35,7 @@ dev_dependencies:
 flutter_icons:
   image_path:
     - assets/concours_app_icon.png
+    - assets/sport/cricket.svg
   android: true
   ios: true
 
@@ -62,7 +64,32 @@ flutter:
     - assets/concours_logo.png
     - assets/google_sign_in.png
     - assets/logo.png
-   
+
+  fonts:
+    - family: badminton
+      fonts:
+        - asset: assets/fonts/badminton.ttf
+
+    - family: basketball
+      fonts:
+        - asset: assets/fonts/basketball.ttf
+
+    - family: cricket
+      fonts:
+        - asset: assets/fonts/cricket.ttf
+
+    - family: football
+      fonts:
+        - asset: assets/fonts/football.ttf
+
+    - family: tabletennis
+      fonts:
+        - asset: assets/fonts/tabletennis.ttf
+
+    - family: volleyball
+      fonts:
+        - asset: assets/fonts/volleyball.ttf
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
 

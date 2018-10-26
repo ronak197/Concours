@@ -6,6 +6,7 @@ import 'package:concours/upcoming_matches.dart';
 import 'package:concours/leaderboard.dart';
 import 'package:concours/info.dart';
 import 'package:concours/about.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 @immutable
 class Page extends StatelessWidget {
@@ -33,7 +34,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController tabController;
   String currentTitle;
 
@@ -44,25 +45,38 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     "Information"
     ];
 
+  TabController sportTabController;
+  String currentSport;
+
+  final List<String> sportsList = ["Badminton","BasketBall","Cricket","Football","LawnTennis","VolleyBall"];
+
   void initState(){
     super.initState();
     currentTitle = titleName[0];
+    currentSport = sportsList[0];
     tabController = new TabController(
       length: 5,
       vsync: this
     );
+    sportTabController = new TabController(
+        length: 6,
+        vsync: this
+    );
     tabController.addListener(_handleSelected);
+    sportTabController.addListener(_handleSelected);
   }
 
   void _handleSelected(){
     setState(() {
       currentTitle = titleName[tabController.index];
+      currentSport = sportsList[sportTabController.index];
     });
   }
 
   void dispose(){
     super.dispose();
     tabController.dispose();
+    sportTabController.dispose();
   }
 
   @override
@@ -70,6 +84,47 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        bottom: new TabBar(
+            controller: sportTabController,
+            tabs: <Tab>[
+              new Tab(
+                icon: new Icon(
+                    IconData(0xe902, fontFamily: "badminton"),
+                    color: Colors.red
+                ),
+              ),
+              new Tab(
+                icon: new Icon(
+                    IconData(0xe900, fontFamily: "basketball"),
+                    color: Colors.red
+                ),
+              ),
+              new Tab(
+                icon: new Icon(
+                    IconData(0xe901, fontFamily: "cricket"),
+                    color: Colors.red
+                ),
+              ),
+              new Tab(
+                icon: new Icon(
+                    IconData(0xe903, fontFamily: "football"),
+                    color: Colors.red
+                ),
+              ),
+              new Tab(
+                icon: new Icon(
+                    IconData(0xe904, fontFamily: "tabletennis"),
+                    color: Colors.red
+                ),
+              ),
+              new Tab(
+                icon: new Icon(
+                    IconData(0xe905, fontFamily: "volleyball"),
+                    color: Colors.red
+                ),
+              ),
+            ]
+        ),
         title: Text(
           currentTitle,
           textAlign: TextAlign.center,
@@ -150,7 +205,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       ),
       body: TabBarView(
         children: <Widget>[
-          ScoreBoard(),
+          ScoreBoard(selectedSport: currentSport),
           LeaderboardPage(),
           UpcomingMatchesPage(),
           InfoPage()

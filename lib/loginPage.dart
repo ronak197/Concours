@@ -31,12 +31,12 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Text(
                     "Continue ",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 25.0,
                       color: Colors.redAccent
                     )
                   ),
-                  Icon(Icons.navigate_next)
                 ]
               )
             ),

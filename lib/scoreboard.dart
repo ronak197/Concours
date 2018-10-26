@@ -3,11 +3,17 @@ import 'package:concours/firestore_config.dart';
 
 
 class ScoreBoard extends StatefulWidget {
+
+  String selectedSport;
+
+  ScoreBoard({this.selectedSport});
+
   @override
   _ScoreBoardState createState() => _ScoreBoardState();
 }
 
 class _ScoreBoardState extends State<ScoreBoard> {
+
   FirestoreConfig firestoreConfig;
   List data;
   Map _reference;
@@ -24,7 +30,6 @@ class _ScoreBoardState extends State<ScoreBoard> {
   @override
   void initState(){
     super.initState();
-
     this.firestoreConfig = new FirestoreConfig("live");
     this._reference = {
       "1S": "1st Singles",
@@ -57,98 +62,99 @@ class _ScoreBoardState extends State<ScoreBoard> {
   @override
   Widget build(BuildContext context) {
     return this.data.length != 0 ? ListView.builder(
-      itemCount: this.data.length,
-      itemBuilder: (BuildContext context, int index){
-        return Card(
-          margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 10.0),
-          child: Container(
-            color: Colors.white,
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.topLeft,
-                  padding: EdgeInsets.all(15.0),
-                  color: Color(0xFFFEECEC),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        this.data[index]["sport"],
-                        style: TextStyle(
-                          color: Color(0xFFff5252),
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.bold
-                        )
-                      ),
-                      Text(
-                        this._reference[data[index]["type"]],
-                        style: TextStyle(
-                          color: Color(0xffff5252),
-                          fontSize: 15.0
-                        )
-                      )
-                    ]
-                  )
-                ),
-                Container(
-                  color: Color(0xffff5252),
-                  padding: EdgeInsets.all(15.0),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(
-                          bottom: 15.0
+        itemCount: this.data.length,
+        itemBuilder: (BuildContext context, int index){
+          return Card(
+            margin: EdgeInsets.only(left: 5.0,right: 5.0,bottom: 10.0),
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.all(15.0),
+                    color: Color(0xFFFEECEC),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          this.data[index]["sport"],
+                          style: TextStyle(
+                            color: Color(0xFFff5252),
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold
+                          )
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  TextLabel(this.data[index]["participants"][0]["team"], true),
-                                  TextLabel(this.data[index]["participants"][0]["name"], false)
-                                ]
+                        Text(
+                          this._reference[data[index]["type"]],
+                          style: TextStyle(
+                            color: Color(0xffff5252),
+                            fontSize: 15.0
+                          )
+                        )
+                      ]
+                    )
+                  ),
+                  Container(
+                    color: Color(0xffff5252),
+                    padding: EdgeInsets.all(15.0),
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(
+                            bottom: 15.0
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    TextLabel(this.data[index]["participants"][0]["team"], true),
+                                    TextLabel(this.data[index]["participants"][0]["name"], false)
+                                  ]
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  TextLabel(this.data[index]["participants"][1]["team"], true),
-                                  TextLabel(this.data[index]["participants"][1]["name"], false)
-                                ]
-                              ),
-                            )
-                          ]
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    TextLabel(this.data[index]["participants"][1]["team"], true),
+                                    TextLabel(this.data[index]["participants"][1]["name"], false)
+                                  ]
+                                ),
+                              )
+                            ]
+                          ),
                         ),
-                      ),
-                      Score(
-                        this.data[index]["participants"][0]["score"],
-                        this.data[index]["participants"][1]["score"]
-                      ),
-                    ]
+                        Score(
+                          this.data[index]["participants"][0]["score"],
+                          this.data[index]["participants"][1]["score"]
+                        ),
+                      ]
+                    )
+                  ),
+                  Info(
+                    "${this.data[index]["sport"]}, ${this._reference[this.data[index]["type"]]}",
+                    "${this.data[index]["participants"][0]["name"]} from " +
+                    "team ${this.data[index]["participants"][0]["team"]} " +
+                    "vs " +
+                    "${this.data[index]["participants"][1]["name"]} from " +
+                    "team ${this.data[index]["participants"][1]["team"]} "
                   )
-                ),
-                Info(
-                  "${this.data[index]["sport"]}, ${this._reference[this.data[index]["type"]]}",
-                  "${this.data[index]["participants"][0]["name"]} from " +
-                  "team ${this.data[index]["participants"][0]["team"]} " +
-                  "vs " +
-                  "${this.data[index]["participants"][1]["name"]} from " +
-                  "team ${this.data[index]["participants"][1]["team"]} "
-                )
-              ]
-            )
-          ),
-        );
-      }
-    ) : Container(
+                ]
+              )
+            ),
+          );
+        }
+      )
+     : Container(
       color: Colors.white,
       child: Center(
         child: Text(
-          "No Ongoing matches",
+          "No Ongoing ${widget.selectedSport} matches",
           style: TextStyle(
             fontSize: 15.0,
             color: Colors.grey
