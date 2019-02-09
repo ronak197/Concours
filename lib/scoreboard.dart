@@ -23,7 +23,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
     switch (widget.selectedSport){
       case 'Badminton':
         print(widget.selectedSport);
-        return BadmintonDetails();
+        return BadmintonScoreboard();
         break;
       case 'Basketball':
         print(widget.selectedSport);

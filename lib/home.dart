@@ -204,8 +204,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       body: TabBarView(
           children: <Widget>[
             ScoreBoard(selectedSport: currentSport,),
-            UpcomingMatches(),
-            PastMatches(),
+            PastMatches(selectedSport: currentSport,),
+            UpcomingMatches(selectedSport: currentSport,),
           ],
           controller: tabController
       ),
